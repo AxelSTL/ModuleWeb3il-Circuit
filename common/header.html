@@ -1,0 +1,55 @@
+<!-- <?php if(!isset($_SESSION)) { 
+  session_start(); 
+}  ?> -->
+<link rel="stylesheet" type="text/css" href="header.css">
+<head>
+  <meta charset="utf-8">
+  <title>Les Copains</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+</head>
+<header class="header">
+  <nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="logo">3iLCircuit</label>
+    <ul class="menu">
+      <li><a class="active" href="index.html">Accueil</a></li>
+      <li><a href="allCircuit">Les circuits</a></li>
+      <!-- <?php if (isset($_SESSION['admin']) == 1){ ?> -->
+        <li><a href="#">Gestion administrateur</a> <?php } ?>
+        <ul class="sous-menu">
+          <li><a href="addcircuit">Ajouter des circuits</a></li>
+          <li><a href="gestioncompte.php">Gestion des comptes</a></li>
+        </ul>
+      </li>
+      <!-- <?php if (!isset($_SESSION['LastName'])){ ?> -->
+        <li><a href="login.php">Connexion</a></li>
+        <li><a href="inscription.php">Inscription</a></li>
+      <!-- <?php } elseif (isset($_SESSION['LastName'])) { ?> -->
+       <li><a href="logout.php">Deconnexion</a></li>
+       <!-- <?php }?> -->
+     </ul>
+   </nav>
+
+
+<script type="text/javascript">
+
+  function stopscroll(value){
+    if(document.getElementsByTagName("body")[0].value != "true"){
+    document.getElementsByTagName("body")[0].style = "position : fixed;"
+    document.getElementsByTagName("body")[0].value = "true";
+  }
+  else {
+    document.getElementsByTagName("body")[0].style = "position : absolute;"
+        document.getElementsByTagName("body")[0].value = "false";
+  }
+  }
+</script>
+ </header>

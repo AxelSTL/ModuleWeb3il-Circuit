@@ -75,7 +75,7 @@
 // }).listen(8080);
 
 
-
+let fileSystem = require('fs');
 const express = require('express');
 const { check, validationResult } = require('express-validator')
 const router = express.Router();
@@ -116,5 +116,41 @@ router.post('/test',
   console.log(req.body)
 }
 );
+
+router.get('/allCircuit', (req, res) => {
+  res.render('allCircuit', { title: 'Tout les circuits' });
+});
+
+
+router.get('/addcircuit', (req, res) => {
+  res.render('addcircuit', { title: 'Ajouter des circuits' });
+});
+
+
+router.post('/savecircuit',(req, res) => {
+  
+  // let read = fileSystem.createWriteStream(req.body.image_uploads);
+  console.log(req)
+
+  // read.on('finish', function(){
+  //   console.log('Fichier Copié !');
+  // });
+  // const errors = validationResult(req);
+
+//   if (errors.isEmpty()) {
+//  //   res.send('Thank you for your registration!');
+//     res.render('index2', { title: 'Page d\'acceuil' });
+//   } else {
+//     res.render('index', {
+//       title: 'Registration form',
+//       errors: errors.array(),
+//       data: req.body,
+//     });
+//   }
+  // const nom = req.body.nom;
+  // const prenom = req.body.prenom;
+  console.log(req.body)
+});
+
 module.exports = router;
 

@@ -1,0 +1,51 @@
+<!-- <?php session_start(); ?> -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include("../common/header.html") -%>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+</head>
+
+<body class="w-100">
+  <!-- <?php require_once ('header.php'); ?>
+  <?php include('saveEvent.php');?> -->
+  <div class="divAddEvent">
+    <form method="post" action="savecircuit">
+      <div>
+        <label class="element_title" for="title">Titre</label>
+        <div class="element_title">
+          <input type="text" name="title" placeholder="Titre" maxlength="60" required>
+        </div>
+      </div>
+      <div>
+        <label class="element_description" for="description">Descriptif de l'événement</label>
+        <div class="element_description">
+          <input type="text" name="description" placeholder="Description" required>
+          <span id='description'></span>
+        </div>
+      </div>
+      <div>
+        <div>
+          <div class="element_save">
+            <label for="image_uploads">Sélectionner des images à uploader (PNG, JPG)</label>
+            <div class="element_save">
+              <input type="file" id="image_uploads" name="image_uploads" accept="image/*">
+            </div>
+          </div>
+          <p>
+            <font color="red" class="text-center"></font>
+          </p>
+        </div>
+        <div class="element_save">
+          <input id="Save" type="submit" name="saving_btn" value="Sauvegarder">
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- <?php require_once ('footer.php');?> -->
+</body>
+<%- include("../common/footer.html") -%>
+
+</html>
