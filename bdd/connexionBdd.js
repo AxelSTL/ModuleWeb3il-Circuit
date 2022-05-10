@@ -4,12 +4,12 @@ const app = express();
 const mysql = require('mysql');
 
 
-export let users;
+let users;
 
 // app.use(cors());
 
 var connection = mysql.createConnection({
-    host  : 'localhost',
+    host  : '10.7.204.39',
     user     : 'root',
     password : 'root',
     database : 'circuit3il'
