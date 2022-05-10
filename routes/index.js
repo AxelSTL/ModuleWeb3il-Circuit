@@ -69,7 +69,6 @@ req.busboy.on('file', function (fieldname, file, filename) {
     imageName = filename.filename;
     fstream.on('close', function () {    
         console.log("Upload Finished of " + filename.filename);              
-        res.redirect('back');
     });
 });
 
@@ -81,10 +80,9 @@ req.busboy.on('field', function(fieldname, val) {
 
 
 req.busboy.on("finish", function() {
-  console.log("=========================================")
   console.log(imageName)
   console.log(formData)
-  console.log("=========================================")
+  res.render('index', { title: 'Acceuil' });
 });
 
 
