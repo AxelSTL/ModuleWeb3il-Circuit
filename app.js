@@ -46,14 +46,21 @@ const express = require('express');
 const path = require('path');
 const routes = require('./routes/index');
 const bodyParser = require('body-parser');
+const bdd = require('./bdd/connexionBdd');
+
 
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
+bdd.bddConnect();
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', routes);
+
+
+
+
 module.exports = app;
