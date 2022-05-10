@@ -3,10 +3,31 @@
     <head>
         <meta charset="utf-8">
     </head>
+    <script> src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"</script>
     <%- include("../common/header.html") -%>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <body class="w-100">
         Ici seront ajouter les circuits
+
+
+        <div id="app">
+            <span>{{ message }}</span>
+        </div>
+        
+        <h1><%= a[2].title %></h1>
+
     </body>
     <%- include("../common/footer.html") -%>
+
+
+
+    <script>
+        let app = new Vue({
+            el:"#app",
+            data: {
+                message : "Hello World"
+            },
+            template : "<span>{{ message }}</span>"
+        })
+    </script>
 </html>
