@@ -1,0 +1,51 @@
+<!-- <?php session_start(); ?> -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include("../common/header.html") -%>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+</head>
+
+<body class="w-100">
+  <!-- <?php require_once ('header.php'); ?>
+  <?php include('saveEvent.php');?> -->
+  <div class="d-flex w-100 justify-content-center">
+    <form method="post" action="savecircuit" enctype="multipart/form-data">
+      <div>
+        <label class="d-flex justify-content-center" for="title">Titre</label>
+        <div class="element_title">
+          <input class="w-100" type="text" name="title" placeholder="Titre" maxlength="60" required>
+        </div>
+      </div>
+      <div>
+        <label class="d-flex justify-content-center" for="description">Descriptif de l'événement</label>
+        <div class="element_description">
+          <input class="w-100 h-200" type="text" name="description" placeholder="Description" required>
+          <span id='description'></span>
+        </div>
+      </div>
+      <div>
+        <div>
+          <div class="element_save">
+            <label class="d-flex justify-content-center"  for="image_uploads">Sélectionner des images à uploader (PNG, JPG)</label>
+            <div class="element_save">
+              <input class="d-flex justify-content-center" type="file" id="image_uploads" name="image_uploads" accept="image/*">
+            </div>
+          </div>
+          <!-- <p>
+            <font color="red" class="text-center"></font>
+          </p> -->
+        </div>
+        <div class="mb-2 mt-2 d-flex justify-content-center">
+          <input class="btn btn-primary " id="Save" type="submit" name="saving_btn" value="Sauvegarder">
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- <?php require_once ('footer.php');?> -->
+</body>
+<%- include("../common/footer.html") -%>
+
+</html>
