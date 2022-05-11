@@ -7,7 +7,14 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const bdd = require('../bdd/connexionBdd');
-let sessions = require('express-session');
+let listUser;
+let sessions = require('express-session'); 
+
+const twoHours = 1000 * 60 * 60 * 2;
+
+
+
+
 
 
 router.get('/', (req, res) => {
@@ -15,6 +22,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/index.html', (req, res) => {
+  
   res.render('index', { title: 'Page d\'acceuil' });
 });
 
@@ -23,7 +31,8 @@ router.get('/inscription', (req, res) => {
 });
 
 router.get('/connexion', (req, res) => {
-  res.render('connexion', { title: 'connexion' });
+  let result = "";
+  res.render('connexion', { result: '' });
 });
 
 router.post('/test',
@@ -57,52 +66,61 @@ router.post('/test',
 
 router.post('/usersingup', (req, res) => {
 
-  bdd.userSingup(req.body.nom , req.body.prenom , req.body.mdp , req.body.mail);
+  const test = bdd.userSinging(req.body.nom , req.body.prenom , req.body.mdp , req.body.mail);
+  console.log(test);
 
 });
 
-// router.post('/usersinging', (req, res) => {
 
-//   let isSinging = bdd.userSinging(req.body.mail, req.body.mdp);
-  
-//   console.log(isSinging)
- 
-//   if (isSinging){
-//     res.render('index', { title: 'Page d\'acceuil' });
- 
-//   }
-//   else{
-//     res.render('connexion', { title: 'Page d\'acceuil' });
-//   }
 
+// router.post('/usersinging', async (req, res)  => {
+//   await bdd.userSinging().then(  function(result){
+//     setUserList(result);
+//   })
+//   let a = getUserList();
+//   console.log(a[0])
 // });
 
-// router.use(sessions({
-//   secret: "secretkeyfhrgfgrfrty84fwir767",
-//   saveUninitialized:true,
-//   cookie: { maxAge: twoHours },
-//   resave: false
-//  }));
+// function setUserList(result){
+//   this.listUser = result;
+//   //console.log(this.listCircuit)
+// }
 
-let session;
+// function getUserList(result){
+//   return this.listUser;
+// }
 
-router.post('/usersinging',function(req,res){
-   bdd.userSinging(req.body.mail, req.body.mdp);
-   user=bdd.users;
-  console.log(user);
-  // console.log('***user.html***');
-  // console.log('login : ' + req.body.mail);
-  // console.log('password : ' + req.body.mdp);
-  if(req.body.mail == user.login && req.body.mdp == user.pwd){
-    session = req.session; // middleware express_session
-    session.userid = req.body.login; // middleware body-parser
-    console.log(req.session) ;
-    console.log(session.userid) ;
-  }
-  else{
-    res.send('Login et mode passe incorrects');
-  } 
+//session middleware
+router.use(sessions({
+  secret: "secretkeyfhrgfgrfrty84fwir767",
+  saveUninitialized:true,
+  cookie: { maxAge: twoHours },
+  resave: false
+ }));
+
+ router.use(express.urlencoded({ extended: true }));
+
+
+ router.get('/logout',function(req,res){
+  let session = bdd.getSession();
+  console.log(session)
+  req.session.destroy();
+
+  res.render('index', { title: 'Tout les circuits' });
+  
+});
+
+
+router.post('/usersinging',bdd.middleWare, function(req,res){
+      console.log('coucou');
+      
  });
+ 
+
+ router.get('/userislogin', (req, res) => {
+  console.log('-yuyjjyuyèi_è__ii_');
+  
+});
  
 
 router.get('/allCircuit', (req, res) => {
