@@ -9,55 +9,81 @@ const router = express.Router();
 const bdd = require('../bdd/connexionBdd');
 const { stringify } = require('querystring');
 let listCircuit;
+let user;
+let session = "";
 
 
 router.get('/', (req, res) => {
-  //console.log(this.session);
-  //let varTemp = testSession();
   res.render('index', { session: this.session });
-
-  //res.send('../common/header', {session: varTemp});
+  // res.send('../common/header', {session : this.session});
 });
 
 router.get('/index', (req, res) => {
- 
-  console.log(this.session);
-  //let varTemp = testSession();
-  //console.log(session.nom);
   res.render('index', { session: this.session });
+  // res.send('../common/header', {session : this.session});
 
 });
 
 router.get('/inscription', (req, res) => {
-  res.render('inscription', { title: 'inscription' });
+  res.render('inscription', { title: 'inscription', session: this.session  });
+  // res.send('../common/header', {session : this.session});
 });
 
 router.get('/connexion', (req, res) => {
-  let errorsMessage = "";
-  res.render('connexion', { errorsMessage: '' });
+  res.render('connexion', { errorsMessage: '', session: this.session });
+  //res.send('../common/header', {session : this.session});
 });
 //=============================================================//
 router.get('/inscription', (req, res) => {
-  res.render('inscription', { title: 'inscription' });
+  res.render('inscription', { title: 'inscription', session: this.session });
 });
-//=============================================================//
-router.get('/connexion', (req, res) => {
-  res.render('connexion', { title: 'connexion' });
-});
+
 //=============================================================//
 router.post('/usersingup', (req, res) => {
 
-  let test = bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
-  console.log(test.sql)
-
+bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
+res.render('index', { session: this.session });
 });
 
 //=============================================================//
 
-router.post('/usersinging', (req, res) => {
- const test = bdd.userSinging(req.body.mail, req.body.mdp);
-  console.log(test);
+router.post('/usersinging', async (req, res) => {
+  await bdd.userSinging().then( function(result){
+    setUser(result);
+  })
+  let user = getsetUser();
+  let userconnected = null;
+  for(let i =0; i < user.length; i++){
+    if(user[i].mail == req.body.mail){
+      if(user[i].mdp == req.body.mdp){
+        userconnected = user[i];
+        this.session = userconnected.nom;
+        
+      }
+    }
+  }
+  console.log(userconnected)
+  if(userconnected){
+    res.render('index', { session : this.session });
+  } else{
+    res.render('connexion', { errorsMessage : 'Compte inconnu, veuillez vous inscrire', session : this.session });
+  }
 });
+
+function setUser(result){
+  this.user = result;
+}
+
+function getsetUser(){
+  return this.user;
+}
+
+
+router.get('/logout', (req, res) => {
+  this.session = '';
+  res.render('index', { session: this.session });
+});
+
 
 
 //=============================================================//
@@ -66,7 +92,7 @@ router.get('/allcircuit', async (req, res)  => {
     setListCircuit(result);
   })
   let circuits = getListCircuit();
-  res.render('allCircuit', { circuits: JSON.stringify(circuits) });
+  res.render('allCircuit', { circuits: JSON.stringify(circuits), session: this.session });
 });
 
 function setListCircuit(result){
@@ -80,7 +106,7 @@ function getListCircuit(){
 
 //=============================================================//
 router.get('/addcircuit', (req, res) => {
-  res.render('addcircuit', { title: 'Ajouter des circuits' });
+  res.render('addcircuit', { title: 'Ajouter des circuits', session: this.session });
 });
 
 //=============================================================//
@@ -111,9 +137,7 @@ router.post('/savecircuit', (req, res, next) => {
 
   req.busboy.on("finish", function () {
     bdd.addCircuit(formData.get('title'), formData.get('description'), imageName)
-    console.log(imageName)
-    console.log(formData.get('title'))
-    res.render('index', { title: 'Acceuil' });
+    res.render('index', { session: this.session});
   });
 
 });
