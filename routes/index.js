@@ -4,119 +4,118 @@ var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
 const express = require('express');
-const { check, validationResult } = require('express-validator')
+const { check, validationResult } = require('express-validator');
 const router = express.Router();
+const bdd = require('../bdd/connexionBdd');
+const { stringify } = require('querystring');
+let listCircuit;
+
 
 router.get('/', (req, res) => {
-  res.render('index', { title: 'Page d\'acceuil' });
+  //console.log(this.session);
+  //let varTemp = testSession();
+  res.render('index', { session: this.session });
+
+  //res.send('../common/header', {session: varTemp});
 });
 
-router.get('/index.html', (req, res) => {
-  res.render('index', { title: 'Page d\'acceuil' });
+router.get('/index', (req, res) => {
+ 
+  console.log(this.session);
+  //let varTemp = testSession();
+  //console.log(session.nom);
+  res.render('index', { session: this.session });
+
 });
 
-router.post('/test',
-[
-  check('nom')
-    .isLength({ min: 3 })
-    .withMessage('Please enter a name'),
-  check('prenom')
-    .isLength({ min: 3 })
-    .withMessage('Please enter an email'),
-],
+router.get('/inscription', (req, res) => {
+  res.render('inscription', { title: 'inscription' });
+});
 
-(req, res) => {
-  const errors = validationResult(req);
+router.get('/connexion', (req, res) => {
+  let errorsMessage = "";
+  res.render('connexion', { errorsMessage: '' });
+});
+//=============================================================//
+router.get('/inscription', (req, res) => {
+  res.render('inscription', { title: 'inscription' });
+});
+//=============================================================//
+router.get('/connexion', (req, res) => {
+  res.render('connexion', { title: 'connexion' });
+});
+//=============================================================//
+router.post('/usersingup', (req, res) => {
 
-  if (errors.isEmpty()) {
- //   res.send('Thank you for your registration!');
-    res.render('index2', { title: 'Page d\'acceuil' });
-  } else {
-    res.render('index', {
-      title: 'Registration form',
-      errors: errors.array(),
-      data: req.body,
-    });
-  }
-  const nom = req.body.nom;
-  const prenom = req.body.prenom;
-  console.log(req.body)
+  let test = bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
+  console.log(test.sql)
+
+});
+
+//=============================================================//
+
+router.post('/usersinging', (req, res) => {
+ const test = bdd.userSinging(req.body.mail, req.body.mdp);
+  console.log(test);
+});
+
+
+//=============================================================//
+router.get('/allcircuit', async (req, res)  => {
+  await bdd.getCircuit().then( function(result){
+    setListCircuit(result);
+  })
+  let circuits = getListCircuit();
+  res.render('allCircuit', { circuits: JSON.stringify(circuits) });
+});
+
+function setListCircuit(result){
+  this.listCircuit = result;
+  //console.log(this.listCircuit)
 }
-);
 
-router.get('/allCircuit', (req, res) => {
-  res.render('allCircuit', { title: 'Tout les circuits' });
-});
+function getListCircuit(){
+  return this.listCircuit;
+}
 
-
+//=============================================================//
 router.get('/addcircuit', (req, res) => {
   res.render('addcircuit', { title: 'Ajouter des circuits' });
 });
 
+//=============================================================//
+router.post('/savecircuit', (req, res, next) => {
+  var fstream;
+  let fileData = null;
+  let imageName;
+  req.pipe(req.busboy);
 
-router.post('/savecircuit',(req, res, next) => {
-var fstream;
-let fileData = null;
-let imageName;
-req.pipe(req.busboy);
-
-//Recupération de l'image et sauvegarde de celle-ci
-req.busboy.on('file', function (fieldname, file, filename) {
+  //Recupération de l'image et sauvegarde de celle-ci
+  req.busboy.on('file', function (fieldname, file, filename) {
     console.log("Uploading: " + filename.filename);
     let newpath = __dirname.replace('routes', '')
     fstream = fs.createWriteStream(newpath + '/images/' + filename.filename);
     file.pipe(fstream);
     imageName = filename.filename;
-    fstream.on('close', function () {    
-        console.log("Upload Finished of " + filename.filename);              
+    fstream.on('close', function () {
+      console.log("Upload Finished of " + filename.filename);
     });
-});
+  });
 
-//Récupération des champs titre et description
-let formData = new Map();
-req.busboy.on('field', function(fieldname, val) {
-  formData.set(fieldname, val);
-});
-
-
-req.busboy.on("finish", function() {
-  console.log(imageName)
-  console.log(formData)
-  res.render('index', { title: 'Acceuil' });
-});
+  //Récupération des champs titre et description
+  let formData = new Map();
+  req.busboy.on('field', function (fieldname, val) {
+    formData.set(fieldname, val);
+  });
 
 
-// req.busboy.on('finish', function() {
-//   res.render('index', { title: 'Acceuil' });
-// });
+  req.busboy.on("finish", function () {
+    bdd.addCircuit(formData.get('title'), formData.get('description'), imageName)
+    console.log(imageName)
+    console.log(formData.get('title'))
+    res.render('index', { title: 'Acceuil' });
+  });
 
 });
 module.exports = router;
 
-
-
-
-
-  //let read = fs.createReadStream(__dirname + myFileSrc);
-
-//   let read = fileSystem.createWriteStream(req.body.image_uploads);
-
-//    read.on('finish', function(){
-//      console.log('Fichier Copié !');
-//  });
-
-//   if (errors.isEmpty()) {
-//  //   res.send('Thank you for your registration!');
-//     res.render('index2', { title: 'Page d\'acceuil' });
-//   } else {
-//     res.render('index', {
-//       title: 'Registration form',
-//       errors: errors.array(),
-//       data: req.body,
-//     });
-//   }
-  // const nom = req.body.nom;
-  // const prenom = req.body.prenom;
-  // console.log(req.files)
-  // console.log(req.body)
-//  });
