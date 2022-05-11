@@ -4,7 +4,7 @@ var busboy = require('connect-busboy'); //middleware for form/file upload
 var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
 const express = require('express');
-const { check, validationResult } = require('express-validator')
+const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const bdd = require('../bdd/connexionBdd');
 const { stringify } = require('querystring');
@@ -12,11 +12,29 @@ let listCircuit;
 
 
 router.get('/', (req, res) => {
-  res.render('index', { title: 'Page d\'acceuil' });
+  //console.log(this.session);
+  //let varTemp = testSession();
+  res.render('index', { session: this.session });
+
+  //res.send('../common/header', {session: varTemp});
 });
-//=============================================================//
-router.get('/index.html', (req, res) => {
-  res.render('index', { title: 'Page d\'acceuil' });
+
+router.get('/index', (req, res) => {
+ 
+  console.log(this.session);
+  //let varTemp = testSession();
+  //console.log(session.nom);
+  res.render('index', { session: this.session });
+
+});
+
+router.get('/inscription', (req, res) => {
+  res.render('inscription', { title: 'inscription' });
+});
+
+router.get('/connexion', (req, res) => {
+  let errorsMessage = "";
+  res.render('connexion', { errorsMessage: '' });
 });
 //=============================================================//
 router.get('/inscription', (req, res) => {
@@ -31,7 +49,6 @@ router.post('/usersingup', (req, res) => {
 
   let test = bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
   console.log(test.sql)
-
 
 });
 

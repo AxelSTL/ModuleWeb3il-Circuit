@@ -1,10 +1,11 @@
 const express = require('express');
+const res = require('express/lib/response');
 //const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
 
 
-let users;
+
 
 // app.use(cors());
 
@@ -28,31 +29,33 @@ function bddConnect() {
 }
 
 
-function userSingup(nom, prenom, mdp, mail) {
-  connection.query("insert into user (nom,prenom,mdp,mail) VALUES (\'" + nom + "\',\'" + prenom + "\',\'" + mdp + "\',\'" + mail + "\')", function (err, resultat) {
-    if (err) {
+function userSingup (nom,prenom,mdp,mail ){
+  connection.query("insert into user (nom,prenom,mdp,mail) VALUES (\'" + nom + "\',\'" + prenom + "\',\'" + mdp + "\',\'" + mail + "\')", function (err, resultat){
+    if (err){
       connection.end;
       throw err;
     }
-    else {
+    else{
+      console.log(resultat);
       connection.end;
     }
   });
 
 }
 
-function userSinging(mail, mdp) {
-  return connection.query("SELECT * FROM `user` ", async function () {
-    connection.query("SELECT * FROM `user` ", function (err, rows, result) {
-      if (err) {
-        connection.end();
-        throw err;
-      }
-      return mail;
-    })
 
+function userSinging(){
+  return new Promise((resolve, reject) => {
+  let sql = "SELECT * FROM user ";
+  let query = connection.query(sql, (err, result, field) => {
+    if(err) throw err;
+  resolve(result)
   });
+});
 }
+
+
+
 
 
 function addCircuit(title, description, image){
@@ -69,13 +72,16 @@ function addCircuit(title, description, image){
 
 function getCircuit(){
   return new Promise((resolve, reject) => {
-  let sql = "SELECT * FROM `circuit` ";
-  let query = connection.query(sql, (err, result, field) => {
+  let sql = "SELECT * FROM `circuit` ";  let query = connection.query(sql, (err, result, field) => {
     if(err) throw err;
   resolve(result)
   });
 });
 }
+
+
+
+
 
 
 
