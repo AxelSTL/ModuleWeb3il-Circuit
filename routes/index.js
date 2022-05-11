@@ -7,6 +7,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator')
 const router = express.Router();
 const bdd = require('../bdd/connexionBdd');
+const { stringify } = require('querystring');
 let listCircuit;
 
 
@@ -47,9 +48,8 @@ router.get('/allcircuit', async (req, res)  => {
   await bdd.getCircuit().then( function(result){
     setListCircuit(result);
   })
-  let a = getListCircuit();
-  console.log(a[0])
-  res.render('allCircuit', { a: a });
+  let circuits = getListCircuit();
+  res.render('allCircuit', { circuits: JSON.stringify(circuits) });
 });
 
 function setListCircuit(result){
@@ -57,7 +57,7 @@ function setListCircuit(result){
   //console.log(this.listCircuit)
 }
 
-function getListCircuit(result){
+function getListCircuit(){
   return this.listCircuit;
 }
 
