@@ -1,7 +1,6 @@
-<!-- <?php if(!isset($_SESSION)) { 
-  session_start(); 
-}  ?> -->
+
 <link rel="stylesheet" type="text/css" href="header.css">
+
 <head>
   <meta charset="utf-8">
   <title>3iL Circuit</title>
@@ -11,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+  
 </head>
 <header class="header">
   <nav>
@@ -19,36 +19,37 @@
       <i class="fas fa-bars"></i>
     </label>
     <label class="logo">3iLCircuit</label>
+    <% if(session !== ""){ %>
+      <label class="p-50">Bonjour <%= session %></label>
+      <% } %>
     <ul class="menu">
       <li><a class="active" href="index">Accueil</a></li>
       <li><a href="allCircuit">Les circuits</a></li>
-      <!-- <?php if (isset($_SESSION['admin']) == 1){ ?> -->
-        <li><a href="#">Gestion administrateur</a> <?php } ?>
-        <ul class="sous-menu">
-          <li><a href="addcircuit">Ajouter des circuits</a></li>
-          <li><a href="gestioncompte.php">Gestion des comptes</a></li>
-        </ul>
-      </li>
-      <!-- <?php if (!isset($_SESSION['LastName'])){ ?> -->
-        <li><a href="connexion">Connexion</a></li>
-        <li><a href="inscription">Inscription</a></li>
-      <!-- <?php } elseif (isset($_SESSION['LastName'])) { ?> -->
-       <li><a href="logout">Deconnexion</a></li>
-       <!-- <?php }?> -->
-     </ul>
-   </nav>
 
-<script type="text/javascript">
+      <% if(session !== ""){ %>
+        <li><a href="addcircuit">Ajouter des circuits</a></li>
+        <li><a href="logout">Deconnexion</a></li>
 
-  function stopscroll(value){
-    if(document.getElementsByTagName("body")[0].value != "true"){
-    document.getElementsByTagName("body")[0].style = "position : fixed;"
-    document.getElementsByTagName("body")[0].value = "true";
-  }
-  else {
-    document.getElementsByTagName("body")[0].style = "position : absolute;"
-        document.getElementsByTagName("body")[0].value = "false";
-  }
-  }
-</script>
- </header>
+
+        <% } else { %>
+
+            <li><a href="connexion">Connexion</a></li>
+            <li><a href="inscription">Inscription</a></li>
+          <% }%>
+
+    </ul>
+  </nav>
+    <script type="text/javascript">
+
+      function stopscroll(value) {
+        if (document.getElementsByTagName("body")[0].value != "true") {
+          document.getElementsByTagName("body")[0].style = "position : fixed;"
+          document.getElementsByTagName("body")[0].value = "true";
+        }
+        else {
+          document.getElementsByTagName("body")[0].style = "position : absolute;"
+          document.getElementsByTagName("body")[0].value = "false";
+        }
+      }
+    </script>
+</header>
