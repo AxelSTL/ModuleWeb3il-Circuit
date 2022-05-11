@@ -11,19 +11,36 @@ let listUser;
 let sessions = require('express-session'); 
 
 const twoHours = 1000 * 60 * 60 * 2;
+var session;
 
+function testSession(){
+  if (this.session){
+    
+    return this.session.nom;
+    
+  }else{
+    return this.session;
+  }
 
-
+}
 
 
 
 router.get('/', (req, res) => {
-  res.render('index', { title: 'Page d\'acceuil' });
+  //console.log(this.session);
+  //let varTemp = testSession();
+  res.render('index', { session: this.session });
+
+  //res.send('../common/header', {session: varTemp});
 });
 
-router.get('/index.html', (req, res) => {
-  
-  res.render('index', { title: 'Page d\'acceuil' });
+router.get('/index', (req, res) => {
+ 
+  console.log(this.session);
+  //let varTemp = testSession();
+  //console.log(session.nom);
+  res.render('index', { session: this.session });
+
 });
 
 router.get('/inscription', (req, res) => {
@@ -31,8 +48,8 @@ router.get('/inscription', (req, res) => {
 });
 
 router.get('/connexion', (req, res) => {
-  let result = "";
-  res.render('connexion', { result: '' });
+  let errorsMessage = "";
+  res.render('connexion', { errorsMessage: '' });
 });
 
 router.post('/test',
@@ -73,22 +90,46 @@ router.post('/usersingup', (req, res) => {
 
 
 
-// router.post('/usersinging', async (req, res)  => {
-//   await bdd.userSinging().then(  function(result){
-//     setUserList(result);
-//   })
-//   let a = getUserList();
-//   console.log(a[0])
-// });
+router.post('/usersinging', async (req, res)  => {
+  await bdd.userSinging().then(  function(result){
+    setUserList(result);
+  })
+  let a = getUserList();
+  let user = null;
+  for(let i=0; i<a.length; i++){
+    if (req.body.mail == a[i].mail){
+      if(req.body.mdp == a[i].mdp){
+        user = a[i];
+      }
+    }
+  }
+  if (user){
+    this.session = user; 
+    res.render('index', { session: this.session });
+    // console.log(session) ;
+    // console.log(user);
+  }else{
+    //this.session.nom="";
+    res.render('connexion', { errorsMessage: "Erreur de co" });
+  }
+ // console.log(req.body)
+});
 
-// function setUserList(result){
-//   this.listUser = result;
-//   //console.log(this.listCircuit)
-// }
+router.get('/logout', (req, res) => {
+  this.session.nom="";
+  //console.log(req.session.destroy())
 
-// function getUserList(result){
-//   return this.listUser;
-// }
+  res.render('index', { session: this.session });
+});
+
+function setUserList(result){
+  this.listUser = result;
+  //console.log(this.listCircuit)
+}
+
+function getUserList(result){
+  return this.listUser;
+}
 
 //session middleware
 router.use(sessions({
@@ -101,30 +142,26 @@ router.use(sessions({
  router.use(express.urlencoded({ extended: true }));
 
 
- router.get('/logout',function(req,res){
-  let session = bdd.getSession();
-  console.log(session)
-  req.session.destroy();
+//  router.get('/logout',function(req,res){
+//   let session = bdd.getSession();
+//   console.log(session)
+//   req.session.destroy();
 
-  res.render('index', { title: 'Tout les circuits' });
+//   res.render('index', { title: 'Tout les circuits' });
   
-});
+// });
 
 
-router.post('/usersinging',bdd.middleWare, function(req,res){
-      console.log('coucou');
+// router.post('/usersinging',bdd.middleWare, function(req,res){
+//       console.log('coucou');
       
- });
- 
+//  });
 
- router.get('/userislogin', (req, res) => {
-  console.log('-yuyjjyuyèi_è__ii_');
-  
-});
  
 
 router.get('/allCircuit', (req, res) => {
-  res.render('allCircuit', { title: 'Tout les circuits' });
+  let varTemp = testSession();
+  res.render('allCircuit', { session: varTemp });
 });
 
 
