@@ -25,7 +25,7 @@ router.get('/index', (req, res) => {
 });
 
 router.get('/inscription', (req, res) => {
-  res.render('inscription', { title: 'inscription', session: this.session  });
+  res.render('inscription', { title: 'inscription', session: this.session });
   // res.send('../common/header', {session : this.session});
 });
 
@@ -40,41 +40,45 @@ router.get('/inscription', (req, res) => {
 
 //=============================================================//
 router.post('/usersingup', (req, res) => {
+  bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
+  res.render('index', { session: this.session });
+});
 
-bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
-res.render('index', { session: this.session });
+//=============================================================//
+router.get('/easteregg', (req, res) => {
+  res.render('easteregg', { session: this.session });
 });
 
 //=============================================================//
 
 router.post('/usersinging', async (req, res) => {
-  await bdd.userSinging().then( function(result){
+  await bdd.userSinging().then(function (result) {
     setUser(result);
   })
   let user = getsetUser();
   let userconnected = null;
-  for(let i =0; i < user.length; i++){
-    if(user[i].mail == req.body.mail){
-      if(user[i].mdp == req.body.mdp){
+  for (let i = 0; i < user.length; i++) {
+    if (user[i].mail == req.body.mail) {
+      if (user[i].mdp == req.body.mdp) {
         userconnected = user[i];
         this.session = userconnected.nom;
-        
+
       }
     }
   }
   console.log(userconnected)
-  if(userconnected){
-    res.render('index', { session : this.session });
-  } else{
-    res.render('connexion', { errorsMessage : 'Compte inconnu, veuillez vous inscrire', session : this.session });
+  if (userconnected) {
+    res.render('index', { session: this.session });
+  } else {
+    res.render('connexion', { errorsMessage: 'Compte inconnu, veuillez vous inscrire', session: this.session });
   }
 });
 
-function setUser(result){
+function setUser(result) {
   this.user = result;
 }
 
-function getsetUser(){
+function getsetUser() {
   return this.user;
 }
 
@@ -87,20 +91,20 @@ router.get('/logout', (req, res) => {
 
 
 //=============================================================//
-router.get('/allcircuit', async (req, res)  => {
-  await bdd.getCircuit().then( function(result){
+router.get('/allcircuit', async (req, res) => {
+  await bdd.getCircuit().then(function (result) {
     setListCircuit(result);
   })
   let circuits = getListCircuit();
   res.render('allCircuit', { circuits: JSON.stringify(circuits), session: this.session });
 });
 
-function setListCircuit(result){
+function setListCircuit(result) {
   this.listCircuit = result;
   //console.log(this.listCircuit)
 }
 
-function getListCircuit(){
+function getListCircuit() {
   return this.listCircuit;
 }
 
@@ -137,8 +141,12 @@ router.post('/savecircuit', (req, res, next) => {
 
   req.busboy.on("finish", function () {
     bdd.addCircuit(formData.get('title'), formData.get('description'), imageName)
-    res.render('index', { session: this.session});
+    res.render('index', { session: this.session });
   });
+
+
+
+
 
 });
 module.exports = router;

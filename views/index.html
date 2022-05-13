@@ -15,7 +15,20 @@
 <link rel="stylesheet" href="./css/bootstrap.min.css">
 <body class="w-100">
     <!-- <%= session %> -->
+    <button type="button" onclick="loadDoc()" class=" btn btn-outline-success">EasterEgg ??</button>
+    <div id="easteregg"></div>
 </body>
 
 <%- include("../common/footer.html") -%>
+
+<script>
+    function loadDoc(){
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function(){
+        document.getElementById("easteregg").innerHTML = this.responseText;
+    }
+    xhttp.open("GET","./easteregg", true);
+    xhttp.send();
+}
+</script>
 </html>

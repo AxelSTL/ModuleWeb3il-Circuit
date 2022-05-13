@@ -2,58 +2,60 @@
 <html class="w-100">
 
 <head>
-    <meta charset="utf-8">
-    <title>3iL Circuit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="header.css">
+  <meta charset="utf-8">
+  <title>3iL Circuit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="header.css">
+  <link rel="stylesheet" type="text/css" href="footer.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+
 <div class=header>
 
-    <nav>
-        <input type="checkbox" id="check">
-        <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
-          <i class="fas fa-bars"></i>
-        </label>
-        <label class="logo">3iLCircuit</label>
-        <% if(session !== ""){ %>
-          <label class="p-50">Bonjour <%= session %></label>
-          <% } %>
+  <nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="logo">3iLCircuit</label>
+    <% if(session !=="" ){ %>
+      <label class="p-50">Bonjour <%= session %></label>
+      <% } %>
         <ul class="menu">
           <li><a class="active" href="index">Accueil</a></li>
           <li><a href="allCircuit">Les circuits</a></li>
-    
-          <% if(session !== ""){ %>
+
+          <% if(session !=="" ){ %>
             <li><a href="addcircuit">Ajouter des circuits</a></li>
             <li><a href="logout">Deconnexion</a></li>
-    
-    
+
+
             <% } else { %>
-    
-                <li><a href="connexion">Connexion</a></li>
-                <li><a href="inscription">Inscription</a></li>
+
+              <li><a href="connexion">Connexion</a></li>
+              <li><a href="inscription">Inscription</a></li>
               <% }%>
-    
+
         </ul>
-      </nav>
-        <script type="text/javascript">
-    
-          function stopscroll(value) {
-            if (document.getElementsByTagName("body")[0].value != "true") {
-              document.getElementsByTagName("body")[0].style = "position : fixed;"
-              document.getElementsByTagName("body")[0].value = "true";
-            }
-            else {
-              document.getElementsByTagName("body")[0].style = "position : absolute;"
-              document.getElementsByTagName("body")[0].value = "false";
-            }
-          }
-        </script>
+  </nav>
+  <script type="text/javascript">
+
+    function stopscroll(value) {
+      if (document.getElementsByTagName("body")[0].value != "true") {
+        document.getElementsByTagName("body")[0].style = "position : fixed;"
+        document.getElementsByTagName("body")[0].value = "true";
+      }
+      else {
+        document.getElementsByTagName("body")[0].style = "position : absolute;"
+        document.getElementsByTagName("body")[0].value = "false";
+      }
+    }
+  </script>
 
 
 
@@ -62,40 +64,68 @@
 
 </div>
 
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/bootstrap.min.css">
 
-    <body class="w-100">
-        <div id="app">
-        </div>
+<body class="w-100">
+  <div id="app">
+  </div>
 
-        <h1 id="circuits" hidden>
-            <%= circuits %>
-        </h1>
-    </body>
-    
+  <h1 id="circuits" hidden>
+    <%= circuits %>
+  </h1>
 
-        <script>
-            let app = new Vue({
-                el: "#app",
-                data: {
-                    circuits: null
-                },
-                // template : "<span>{{ message }}</span>"
-                // },
-                created() {
-                    const tokenEl = document.getElementById('circuits');
+  <div id="listcircuit">
+    <circuit></circuit>
+  </div>
+</body>
 
-                    this.circuits = tokenEl.innerHTML;
-                    this.circuits = JSON.parse(this.circuits)
-                    //console.log(this.circuits[2].description)
-                },
-                template: `<div v-for='circuit in circuits' class="p-10 ww-50 border"> 
-                        <h1>{{circuit.title}}</h1>
-                        <p>{{circuit.description}}</p>
-                        <img class="w-50" src="{{circuit.image}}"
-                </div>`
 
-            })
-        </script>
+<script>
+  Vue.component('circuit', {
+      data:{
+        circuits: null
+      },
+      created() {
+          const tokenEl = document.getElementById('circuits');
+          this.circuits = tokenEl.innerHTML;      
+          this.circuits = JSON.parse(this.circuits)
+      },
+      template: `<div><div v-for='circuit in circuits' class="p-10 ww-50 border"> 
+              <h1>{{circuit.title}}</h1>
+              <p>{{circuit.description}}</p>
+              <img class="w-50" v-bind:src="circuit.image"/>
+              <p>test</p>
+              </div></div>`
+})
+ new Vue({ el: '#listcircuit' })
+</script>
+
+
+
+
+<footer class="footer">
+
+  <div class="footer-right">
+
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-snapchat"></i></a>
+    <a href="#"><i class="fab fa-tiktok"></i></a>
+
+  </div>
+
+  <div class="footer-left">
+
+    <p class="footer-links">
+      <a class="link-1" href=".">Accueil</a>
+
+      <a href="allCircuit">Les circuits</a>
+
+    </p>
+
+    <p>3iLCircuit &copy; 2021</p>
+  </div>
+
+</footer>
 
 </html>
