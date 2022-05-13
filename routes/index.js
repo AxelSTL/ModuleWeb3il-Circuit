@@ -5,48 +5,62 @@ var path = require('path');     //used for file path
 var fs = require('fs-extra');       //File System - for file manipulation
 const express = require('express');
 const { check, validationResult } = require('express-validator');
+
 const router = express.Router();
 const bdd = require('../bdd/connexionBdd');
 const { stringify } = require('querystring');
+let session = require('express-session');
 let listCircuit;
 let user;
-let session = "";
+//let session = "";
+
+router.use(session({
+  username: '',
+  connexion: false,
+  admin: false,
+  secret: 'testetstets',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+      maxAge:(600000)
+  }      
+}));
 
 
 router.get('/', (req, res) => {
-  res.render('index', { session: this.session });
+  res.render('index', { session: req.session.username });
   // res.send('../common/header', {session : this.session});
 });
 
 router.get('/index', (req, res) => {
-  res.render('index', { session: this.session });
+  res.render('index', { session: req.session.username });
   // res.send('../common/header', {session : this.session});
 
 });
 
 router.get('/inscription', (req, res) => {
-  res.render('inscription', { title: 'inscription', session: this.session });
+  res.render('inscription', { title: 'inscription', session: req.session.username });
   // res.send('../common/header', {session : this.session});
 });
 
 router.get('/connexion', (req, res) => {
-  res.render('connexion', { errorsMessage: '', session: this.session });
+  res.render('connexion', { errorsMessage: '', session: req.session.username });
   //res.send('../common/header', {session : this.session});
 });
 //=============================================================//
 router.get('/inscription', (req, res) => {
-  res.render('inscription', { title: 'inscription', session: this.session });
+  res.render('inscription', { title: 'inscription', session: req.session.username });
 });
 
 //=============================================================//
 router.post('/usersingup', (req, res) => {
   bdd.userSingup(req.body.nom, req.body.prenom, req.body.mdp, req.body.mail);
-  res.render('index', { session: this.session });
+  res.render('index', { session: req.session.username });
 });
 
 //=============================================================//
 router.get('/easteregg', (req, res) => {
-  res.render('easteregg', { session: this.session });
+  res.render('easteregg', { session: req.session.username });
 });
 
 //=============================================================//
@@ -61,16 +75,19 @@ router.post('/usersinging', async (req, res) => {
     if (user[i].mail == req.body.mail) {
       if (user[i].mdp == req.body.mdp) {
         userconnected = user[i];
-        this.session = userconnected.nom;
+        // this.session = userconnected.nom;
+        // req.session.userid = userconnected.nom;
+       // console.log(req.session)
 
       }
     }
   }
-  console.log(userconnected)
+ // console.log(userconnected)
   if (userconnected) {
-    res.render('index', { session: this.session });
+    req.session.username = userconnected.nom
+    res.render('index', { session: req.session.username });
   } else {
-    res.render('connexion', { errorsMessage: 'Compte inconnu, veuillez vous inscrire', session: this.session });
+    res.render('connexion', { errorsMessage: 'Compte inconnu, veuillez vous inscrire', session: req.session.username });
   }
 });
 
@@ -84,8 +101,9 @@ function getsetUser() {
 
 
 router.get('/logout', (req, res) => {
-  this.session = '';
-  res.render('index', { session: this.session });
+
+  req.session.destroy();
+  res.render('index', { session: '' });
 });
 
 
@@ -96,7 +114,7 @@ router.get('/allcircuit', async (req, res) => {
     setListCircuit(result);
   })
   let circuits = getListCircuit();
-  res.render('allCircuit', { circuits: JSON.stringify(circuits), session: this.session });
+  res.render('allCircuit', { circuits: JSON.stringify(circuits), session: req.session.username });
 });
 
 function setListCircuit(result) {
@@ -110,7 +128,7 @@ function getListCircuit() {
 
 //=============================================================//
 router.get('/addcircuit', (req, res) => {
-  res.render('addcircuit', { title: 'Ajouter des circuits', session: this.session });
+  res.render('addcircuit', { title: 'Ajouter des circuits', session: req.session.username });
 });
 
 //=============================================================//
@@ -141,7 +159,7 @@ router.post('/savecircuit', (req, res, next) => {
 
   req.busboy.on("finish", function () {
     bdd.addCircuit(formData.get('title'), formData.get('description'), imageName)
-    res.render('index', { session: this.session });
+    res.render('index', { session: req.session.username });
   });
 
 

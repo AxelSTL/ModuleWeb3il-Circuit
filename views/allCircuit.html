@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="header.css">
   <link rel="stylesheet" type="text/css" href="footer.css">
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <div class=header>
@@ -23,14 +23,14 @@
       <i class="fas fa-bars"></i>
     </label>
     <label class="logo">3iLCircuit</label>
-    <% if(session !=="" ){ %>
+    <% if(session){ %>
       <label class="p-50">Bonjour <%= session %></label>
       <% } %>
         <ul class="menu">
           <li><a class="active" href="index">Accueil</a></li>
           <li><a href="allCircuit">Les circuits</a></li>
 
-          <% if(session !=="" ){ %>
+          <% if(session){ %>
             <li><a href="addcircuit">Ajouter des circuits</a></li>
             <li><a href="logout">Deconnexion</a></li>
 
