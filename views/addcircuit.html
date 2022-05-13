@@ -1,88 +1,56 @@
-<!-- <?php session_start(); ?> -->
 <!DOCTYPE html>
 <html>
 
 <head>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <meta charset="utf-8">
-    <title>3iL Circuit</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="header.css">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <meta charset="utf-8">
+  <title>3iL Circuit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="header.css">
+  <link rel="stylesheet" type="text/css" href="footer.css">
 </head>
 
 <body class="w-100">
-
   <div class=header>
-
     <nav>
-        <input type="checkbox" id="check">
-        <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
-          <i class="fas fa-bars"></i>
-        </label>
-        <label class="logo">3iLCircuit</label>
-        <% if(session !== ""){ %>
-          <label class="p-50">Bonjour <%= session %></label>
-          <% } %>
-        <ul class="menu">
-          <li><a class="active" href="index">Accueil</a></li>
-          <li><a href="allCircuit">Les circuits</a></li>
-    
-          <% if(session !== ""){ %>
-            <li><a href="addcircuit">Ajouter des circuits</a></li>
-            <li><a href="logout">Deconnexion</a></li>
-    
-    
-            <% } else { %>
-    
+      <input type="checkbox" id="check">
+      <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
+        <i class="fas fa-bars"></i>
+      </label>
+      <label class="logo">3iLCircuit</label>
+      <% if(session){ %>
+        <label class="p-50">Bonjour <%= session %></label>
+        <% } %>
+          <ul class="menu">
+            <li><a class="active" href="index">Accueil</a></li>
+            <li><a href="allCircuit">Les circuits</a></li>
+            <% if(session){ %>
+              <li><a href="addcircuit">Ajouter des circuits</a></li>
+              <li><a href="logout">Deconnexion</a></li>
+              <% } else { %>
                 <li><a href="connexion">Connexion</a></li>
                 <li><a href="inscription">Inscription</a></li>
-              <% }%>
-    
-        </ul>
-      </nav>
-        <script type="text/javascript">
-    
-          function stopscroll(value) {
-            if (document.getElementsByTagName("body")[0].value != "true") {
-              document.getElementsByTagName("body")[0].style = "position : fixed;"
-              document.getElementsByTagName("body")[0].value = "true";
-            }
-            else {
-              document.getElementsByTagName("body")[0].style = "position : absolute;"
-              document.getElementsByTagName("body")[0].value = "false";
-            }
-          }
-        </script>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- <?php require_once ('header.php'); ?>
-  <?php include('saveEvent.php');?> -->
+                <% }%>
+          </ul>
+    </nav>
+    <script type="text/javascript">
+      function stopscroll(value) {
+        if (document.getElementsByTagName("body")[0].value != "true") {
+          document.getElementsByTagName("body")[0].style = "position : fixed;"
+          document.getElementsByTagName("body")[0].value = "true";
+        }
+        else {
+          document.getElementsByTagName("body")[0].style = "position : absolute;"
+          document.getElementsByTagName("body")[0].value = "false";
+        }
+      }
+    </script>
+  </div>
   <div class="d-flex w-100 justify-content-center">
     <form method="post" action="savecircuit" enctype="multipart/form-data">
       <div>
@@ -101,14 +69,13 @@
       <div>
         <div>
           <div class="element_save">
-            <label class="d-flex justify-content-center"  for="image_uploads">Sélectionner des images à uploader (PNG, JPG)</label>
+            <label class="d-flex justify-content-center" for="image_uploads">Sélectionner des images à uploader (PNG,
+              JPG)</label>
             <div class="element_save">
-              <input class="d-flex justify-content-center" type="file" id="image_uploads" name="image_uploads" accept="image/*">
+              <input class="d-flex justify-content-center" type="file" id="image_uploads" name="image_uploads"
+                accept="image/*">
             </div>
           </div>
-          <!-- <p>
-            <font color="red" class="text-center"></font>
-          </p> -->
         </div>
         <div class="mb-2 mt-2 d-flex justify-content-center">
           <input class="btn btn-primary " id="Save" type="submit" name="saving_btn" value="Sauvegarder">
@@ -116,7 +83,21 @@
       </div>
     </form>
   </div>
-  <!-- <?php require_once ('footer.php');?> -->
 </body>
+<footer class="footer">
+  <div class="footer-right">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-snapchat"></i></a>
+    <a href="#"><i class="fab fa-tiktok"></i></a>
+  </div>
+  <div class="footer-left">
+    <p class="footer-links">
+      <a class="link-1" href=".">Accueil</a>
+      <a href="allCircuit">Les circuits</a>
+    </p>
+    <p>3iLCircuit &copy; 2021</p>
+  </div>
+</footer>
 
 </html>
