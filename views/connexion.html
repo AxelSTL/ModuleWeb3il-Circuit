@@ -13,111 +13,68 @@
   <link rel="stylesheet" type="text/css" href="footer.css">
 </head>
 <link rel="stylesheet" href="./css/bootstrap.min.css">
+
 <body bgcolor="#EEEEEE" text="#000000" class="w-100">
-
   <div class=header>
-
     <nav>
-        <input type="checkbox" id="check">
-        <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
-          <i class="fas fa-bars"></i>
-        </label>
-        <label class="logo">3iLCircuit</label>
-        <% if(session){ %>
-          <label class="p-50">Bonjour <%= session %></label>
-          <% } %>
-        <ul class="menu">
-          <li><a class="active" href="index">Accueil</a></li>
-          <li><a href="allCircuit">Les circuits</a></li>
-    
-          <% if(session){ %>
-            <li><a href="addcircuit">Ajouter des circuits</a></li>
-            <li><a href="logout">Deconnexion</a></li>
-    
-    
-            <% } else { %>
-    
+      <input type="checkbox" id="check">
+      <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
+        <i class="fas fa-bars"></i>
+      </label>
+      <label class="logo">3iLCircuit</label>
+      <% if(session){ %>
+        <label class="p-50">Bonjour <%= session %></label>
+        <% } %>
+          <ul class="menu">
+            <li><a class="active" href="index">Accueil</a></li>
+            <li><a href="allCircuit">Les circuits</a></li>
+            <% if(session){ %>
+              <li><a href="addcircuit">Ajouter des circuits</a></li>
+              <li><a href="logout">Deconnexion</a></li>
+              <% } else { %>
                 <li><a href="connexion">Connexion</a></li>
                 <li><a href="inscription">Inscription</a></li>
-              <% }%>
-    
-        </ul>
-      </nav>
-        <script type="text/javascript">
-    
-          function stopscroll(value) {
-            if (document.getElementsByTagName("body")[0].value != "true") {
-              document.getElementsByTagName("body")[0].style = "position : fixed;"
-              document.getElementsByTagName("body")[0].value = "true";
-            }
-            else {
-              document.getElementsByTagName("body")[0].style = "position : absolute;"
-              document.getElementsByTagName("body")[0].value = "false";
-            }
-          }
-        </script>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <% }%>
+          </ul>
+    </nav>
+    <script type="text/javascript">
+      function stopscroll(value) {
+        if (document.getElementsByTagName("body")[0].value != "true") {
+          document.getElementsByTagName("body")[0].style = "position : fixed;"
+          document.getElementsByTagName("body")[0].value = "true";
+        }
+        else {
+          document.getElementsByTagName("body")[0].style = "position : absolute;"
+          document.getElementsByTagName("body")[0].value = "false";
+        }
+      }
+    </script>
+  </div>
   <h1>Connexion</h1>
-
   <form name="formulaire" action="usersinging" method="post">
-
-
-      Courriel:   <input type="text" size="40" name="mail">
-      Mot de Passe:  <input type="password" size="40" name="mdp"> <form>
-      
-
-
-  Connexion: <input type="submit" value="Envoyer">
-  <h1>
-    <%= errorsMessage %>
-  </h1>
-
-  </form>
-
+    Courriel: <input type="text" size="40" name="mail">
+    Mot de Passe: <input type="password" size="40" name="mdp">
+    <form>
+      Connexion: <input type="submit" value="Envoyer">
+      <h1>
+        <%= errorsMessage %>
+      </h1>
+    </form>
 </body>
 <footer class="footer">
-
   <div class="footer-right">
-
     <a href="#"><i class="fab fa-facebook"></i></a>
     <a href="#"><i class="fab fa-twitter"></i></a>
     <a href="#"><i class="fab fa-snapchat"></i></a>
     <a href="#"><i class="fab fa-tiktok"></i></a>
-
   </div>
-
   <div class="footer-left">
-
     <p class="footer-links">
       <a class="link-1" href=".">Accueil</a>
-
       <a href="allCircuit">Les circuits</a>
-
     </p>
-
     <p>3iLCircuit &copy; 2021</p>
   </div>
-
 </footer>
+
 </html>

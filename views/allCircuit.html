@@ -14,9 +14,7 @@
   <link rel="stylesheet" type="text/css" href="footer.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
-
 <div class=header>
-
   <nav>
     <input type="checkbox" id="check">
     <label for="check" class="checkbtn" value="true" onclick="stopscroll(this)">
@@ -29,22 +27,16 @@
         <ul class="menu">
           <li><a class="active" href="index">Accueil</a></li>
           <li><a href="allCircuit">Les circuits</a></li>
-
           <% if(session){ %>
             <li><a href="addcircuit">Ajouter des circuits</a></li>
             <li><a href="logout">Deconnexion</a></li>
-
-
             <% } else { %>
-
               <li><a href="connexion">Connexion</a></li>
               <li><a href="inscription">Inscription</a></li>
               <% }%>
-
         </ul>
   </nav>
   <script type="text/javascript">
-
     function stopscroll(value) {
       if (document.getElementsByTagName("body")[0].value != "true") {
         document.getElementsByTagName("body")[0].style = "position : fixed;"
@@ -56,12 +48,6 @@
       }
     }
   </script>
-
-
-
-
-
-
 </div>
 
 <link rel="stylesheet" href="./css/bootstrap.min.css">
@@ -69,63 +55,46 @@
 <body class="w-100">
   <div id="app">
   </div>
-
   <h1 id="circuits" hidden>
     <%= circuits %>
   </h1>
-
   <div id="listcircuit">
     <circuit></circuit>
   </div>
 </body>
-
-
 <script>
   Vue.component('circuit', {
-      data:{
-        circuits: null
-      },
-      created() {
-          const tokenEl = document.getElementById('circuits');
-          this.circuits = tokenEl.innerHTML;      
-          this.circuits = JSON.parse(this.circuits)
-      },
-      template: `<div><div v-for='circuit in circuits' class="p-10 ww-50 border"> 
+    data: {
+      circuits: null
+    },
+    created() {
+      const tokenEl = document.getElementById('circuits');
+      this.circuits = tokenEl.innerHTML;
+      this.circuits = JSON.parse(this.circuits)
+    },
+    template: `<div><div v-for='circuit in circuits' class="p-10 ww-50 border"> 
               <h1>{{circuit.title}}</h1>
               <p>{{circuit.description}}</p>
               <img class="w-50" v-bind:src="circuit.image"/>
               <p>test</p>
               </div></div>`
-})
- new Vue({ el: '#listcircuit' })
+  })
+  new Vue({ el: '#listcircuit' })
 </script>
-
-
-
-
 <footer class="footer">
-
   <div class="footer-right">
-
     <a href="#"><i class="fab fa-facebook"></i></a>
     <a href="#"><i class="fab fa-twitter"></i></a>
     <a href="#"><i class="fab fa-snapchat"></i></a>
     <a href="#"><i class="fab fa-tiktok"></i></a>
-
   </div>
-
   <div class="footer-left">
-
     <p class="footer-links">
       <a class="link-1" href=".">Accueil</a>
-
       <a href="allCircuit">Les circuits</a>
-
     </p>
-
     <p>3iLCircuit &copy; 2021</p>
   </div>
-
 </footer>
 
 </html>

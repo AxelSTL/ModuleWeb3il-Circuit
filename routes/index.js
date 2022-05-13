@@ -12,7 +12,6 @@ const { stringify } = require('querystring');
 let session = require('express-session');
 let listCircuit;
 let user;
-//let session = "";
 
 router.use(session({
   username: '',
@@ -26,27 +25,26 @@ router.use(session({
   }      
 }));
 
-
+//=============================================================//
 router.get('/', (req, res) => {
   res.render('index', { session: req.session.username });
-  // res.send('../common/header', {session : this.session});
 });
 
+//=============================================================//
 router.get('/index', (req, res) => {
   res.render('index', { session: req.session.username });
-  // res.send('../common/header', {session : this.session});
-
 });
 
+//=============================================================//
 router.get('/inscription', (req, res) => {
   res.render('inscription', { title: 'inscription', session: req.session.username });
-  // res.send('../common/header', {session : this.session});
 });
 
+//=============================================================//
 router.get('/connexion', (req, res) => {
   res.render('connexion', { errorsMessage: '', session: req.session.username });
-  //res.send('../common/header', {session : this.session});
 });
+
 //=============================================================//
 router.get('/inscription', (req, res) => {
   res.render('inscription', { title: 'inscription', session: req.session.username });
@@ -63,8 +61,8 @@ router.get('/easteregg', (req, res) => {
   res.render('easteregg', { session: req.session.username });
 });
 
-//=============================================================//
 
+//=============================================================//
 router.post('/usersinging', async (req, res) => {
   await bdd.userSinging().then(function (result) {
     setUser(result);
@@ -75,14 +73,9 @@ router.post('/usersinging', async (req, res) => {
     if (user[i].mail == req.body.mail) {
       if (user[i].mdp == req.body.mdp) {
         userconnected = user[i];
-        // this.session = userconnected.nom;
-        // req.session.userid = userconnected.nom;
-       // console.log(req.session)
-
       }
     }
   }
- // console.log(userconnected)
   if (userconnected) {
     req.session.username = userconnected.nom
     res.render('index', { session: req.session.username });
@@ -99,14 +92,11 @@ function getsetUser() {
   return this.user;
 }
 
-
+//=============================================================//
 router.get('/logout', (req, res) => {
-
   req.session.destroy();
   res.render('index', { session: '' });
 });
-
-
 
 //=============================================================//
 router.get('/allcircuit', async (req, res) => {
@@ -119,7 +109,6 @@ router.get('/allcircuit', async (req, res) => {
 
 function setListCircuit(result) {
   this.listCircuit = result;
-  //console.log(this.listCircuit)
 }
 
 function getListCircuit() {
@@ -134,7 +123,6 @@ router.get('/addcircuit', (req, res) => {
 //=============================================================//
 router.post('/savecircuit', (req, res, next) => {
   var fstream;
-  let fileData = null;
   let imageName;
   req.pipe(req.busboy);
 
@@ -167,5 +155,8 @@ router.post('/savecircuit', (req, res, next) => {
 
 
 });
+
+
+//=============================================================//
 module.exports = router;
 
